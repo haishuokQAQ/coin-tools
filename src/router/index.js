@@ -382,6 +382,24 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/deploy',
+    component: Layout,
+    redirect: '/deploy/deploy-demo',
+    name: 'deploy',
+    meta: {
+      title: 'deploy',
+      icon: 'deploy'
+    },
+    children: [
+      {
+        path: 'deployDemo',
+        component: () => import('@/views/deploy/deployDemo'),
+        name: 'deployDemo',
+        meta: { title: 'deployDemo' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

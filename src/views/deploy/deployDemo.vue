@@ -29,6 +29,8 @@ window.addEventListener('load', async() => {
       // eslint-disable-next-line no-undef
       account = web3.eth.accounts[0]
       localStorage.setItem('address', account)
+      // eslint-disable-next-line no-undef
+      console.log('当前默认网络为：' + web3.version.network)
     } catch (error) {
       console.log('User denied account access...')
     }
@@ -39,9 +41,15 @@ window.addEventListener('load', async() => {
     account = web3.eth.accounts[0]
     localStorage.setItem('address', account)
     console.log('web3:' + account)
+    // eslint-disable-next-line no-undef
+    console.log('当前默认网络为：' + web3.version.network)
   } else {
     console.log('Non-Ethereum browser detected. You should consider trying MetaMask!')
   }
+  // eslint-disable-next-line no-undef
+  ethereum.on('networkChanged', function(networkIDstring) {
+    console.log('切换了网络，当前是：' + networkIDstring)
+  })
 })
 export default {
   data() {

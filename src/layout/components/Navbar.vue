@@ -1,27 +1,36 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      id="hamburger-container"
+      class="hamburger-container"
+      :is-active="sidebar.opened"
+      @toggleClick="toggleSideBar"/>
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/>
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+        <search id="header-search" class="right-menu-item"/>
 
-        <error-log class="errLog-container right-menu-item hover-effect" />
+        <error-log class="errLog-container right-menu-item hover-effect"/>
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <screenfull id="screenfull" class="right-menu-item hover-effect"/>
 
         <el-tooltip content="Global Size" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
+          <size-select id="size-select" class="right-menu-item hover-effect"/>
         </el-tooltip>
 
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <span v-if="connected">
+            <el-button type="success">{{ ethAddr }}</el-button>
+          </span >
+          <span v-else>
+            <el-button type="success" @click="tryConnect" >连接钱包</el-button>
+          </span>
+          <i class="el-icon-caret-bottom"/>
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/profile/index">
@@ -53,6 +62,7 @@ import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import { connectWallet } from '@/api/web3'
 
 export default {
   components: {
@@ -63,12 +73,24 @@ export default {
     SizeSelect,
     Search
   },
+  data() {
+    return {
+      ethAddr: this.$store.state.eth.address,
+      connected: this.$store.state.eth.connected,
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar',
       'device'
-    ])
+    ]),
+  },
+  watch: {
+    ethAddr: function() {
+      console.log('ETHADDR')
+      console.log(this.ethAddr)
+    }
   },
   methods: {
     toggleSideBar() {
@@ -77,6 +99,9 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    tryConnect() {
+      connectWallet(this)
     }
   }
 }
@@ -88,7 +113,7 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
 
   .hamburger-container {
     line-height: 46px;
@@ -96,7 +121,7 @@ export default {
     float: left;
     cursor: pointer;
     transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
       background: rgba(0, 0, 0, .025)
@@ -143,7 +168,7 @@ export default {
       margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        margin-top: 0px;
         position: relative;
 
         .user-avatar {

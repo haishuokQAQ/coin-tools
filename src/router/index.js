@@ -393,7 +393,7 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'deployDemo',
+        path: 'deploy-demo',
         component: () => import('@/views/deploy/deployDemo'),
         name: 'deployDemo',
         meta: { title: 'deployDemo' }

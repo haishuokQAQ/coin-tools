@@ -32,39 +32,6 @@
   </div>
 </template>
 <script>
-var account
-window.addEventListener('load', async() => {
-  if (window.ethereum) {
-    // eslint-disable-next-line no-undef
-    window.web3 = new Web3(ethereum)
-    try {
-      // eslint-disable-next-line no-undef
-      await ethereum.enable()
-      // eslint-disable-next-line no-undef
-      account = web3.eth.accounts[0]
-      localStorage.setItem('address', account)
-      // eslint-disable-next-line no-undef
-      console.log('当前默认网络为：' + web3.version.network)
-    } catch (error) {
-      console.log('User denied account access...')
-    }
-  } else if (window.web3) {
-    // eslint-disable-next-line no-undef
-    window.web3 = new Web3(web3.currentProvider)
-    // eslint-disable-next-line no-undef
-    account = web3.eth.accounts[0]
-    localStorage.setItem('address', account)
-    console.log('web3:' + account)
-    // eslint-disable-next-line no-undef
-    console.log('当前默认网络为：' + web3.version.network)
-  } else {
-    console.log('Non-Ethereum browser detected. You should consider trying MetaMask!')
-  }
-  // eslint-disable-next-line no-undef
-  ethereum.on('networkChanged', function(networkIDstring) {
-    console.log('切换了网络，当前是：' + networkIDstring)
-  })
-})
 
 export default {
   data() {

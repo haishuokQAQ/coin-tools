@@ -1,20 +1,34 @@
 <template>
-  <div id="deply">
-    <el-form label-width="80px" label-position="left">
-      <el-form-item label="代币名称">
-        <el-input id="tokenName" v-model="tokenName" placeholder="请输入代币名称" />
-      </el-form-item>
-      <el-form-item label="代币简称">
-        <el-input id="symbol" v-model="symbol" placeholder="请输入代币简称" />
-      </el-form-item>
-      <el-form-item label="代币数量">
-        <el-input id="amount" v-model="amount" placeholder="请输入代币数量" />
-      </el-form-item>
-    </el-form>
-    <div style="text-align:right;">
-      <el-button type="danger" @click="dialogVisible=false">Cancel</el-button>
-      <el-button type="primary" @click="deploy">Confirm</el-button>
-    </div>
+  <div id="deply" style="height: 100%">
+    <el-card style="margin-left: 5px">
+      <el-form label-width="auto" label-position="left">
+        <el-form-item label="代币名称">
+          <el-input id="tokenName" v-model="tokenName" placeholder="请输入代币名称" />
+        </el-form-item>
+        <el-form-item label="代币简称">
+          <el-input id="symbol" v-model="symbol" placeholder="请输入代币简称" />
+        </el-form-item>
+        <el-form-item label="代币数量">
+          <el-input id="amount" v-model="amount" placeholder="请输入代币数量" />
+        </el-form-item>
+        <el-form-item label="小数位数(1-18位)">
+          <el-input-number v-model="num" :min="1" :max="18" label="小数位数（1-18）" />
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox-group v-model="checkList">
+            <el-checkbox label="可销毁" />
+            <el-checkbox label="可增发" />
+            <el-checkbox label="可暂停" />
+            <el-checkbox label="黑名单" />
+            <el-checkbox label="通货紧缩" />
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+      <div style="text-align:right;">
+        <el-button type="primary" @click="deploy">确定</el-button>
+        <el-button type="primary" @click="printForm">查看表单</el-button>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>
@@ -51,16 +65,21 @@ window.addEventListener('load', async() => {
     console.log('切换了网络，当前是：' + networkIDstring)
   })
 })
+
 export default {
   data() {
     return {
-      testvalue: '',
       tokenName: '',
-      amount: '',
-      symbol: ''
+      amount: 1000000000,
+      symbol: '',
+      num: 18,
+      checkList: []
     }
   },
   methods: {
+    printForm: function() {
+      console.log(this._data)
+    },
     deploy: function() {
       var tokenName = this.tokenName
       var symbol = this.symbol
@@ -97,3 +116,5 @@ export default {
   }
 }
 </script>
+<style>
+</style>

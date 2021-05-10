@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <WalletListener></WalletListener>
+    <WalletListener />
     <router-view />
   </div>
 </template>

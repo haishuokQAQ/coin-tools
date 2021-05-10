@@ -1,4 +1,4 @@
-import Web3 from 'web3';
+import Web3 from 'web3'
 
 export async function connectWallet(vueObj) {
   if (window.ethereum) {

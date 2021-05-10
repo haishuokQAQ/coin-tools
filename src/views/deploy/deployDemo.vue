@@ -1,7 +1,7 @@
 <template>
-  <div style="height: 100%" id="deply">
-    <el-card  style="margin-left: 5px">
-      <el-form label-width="auto" label-position="left" >
+  <div id="deply" style="height: 100%">
+    <el-card style="margin-left: 5px">
+      <el-form label-width="auto" label-position="left">
         <el-form-item label="代币名称">
           <el-input id="tokenName" v-model="tokenName" placeholder="请输入代币名称" />
         </el-form-item>
@@ -12,15 +12,15 @@
           <el-input id="amount" v-model="amount" placeholder="请输入代币数量" />
         </el-form-item>
         <el-form-item label="小数位数(1-18位)">
-          <el-input-number v-model="num" :min="1" :max="18" label="小数位数（1-18）"></el-input-number>
+          <el-input-number v-model="num" :min="1" :max="18" label="小数位数（1-18）" />
         </el-form-item>
         <el-form-item>
           <el-checkbox-group v-model="checkList">
-            <el-checkbox label="可销毁"></el-checkbox>
-            <el-checkbox label="可增发"></el-checkbox>
-            <el-checkbox label="可暂停"></el-checkbox>
-            <el-checkbox label="黑名单"></el-checkbox>
-            <el-checkbox label="通货紧缩"></el-checkbox>
+            <el-checkbox label="可销毁" />
+            <el-checkbox label="可增发" />
+            <el-checkbox label="可暂停" />
+            <el-checkbox label="黑名单" />
+            <el-checkbox label="通货紧缩" />
           </el-checkbox-group>
         </el-form-item>
       </el-form>
@@ -32,6 +32,7 @@
   </div>
 </template>
 <script>
+
 export default {
   data() {
     return {
@@ -39,7 +40,7 @@ export default {
       amount: 1000000000,
       symbol: '',
       num: 18,
-      checkList: [],
+      checkList: []
     }
   },
   methods: {
@@ -55,7 +56,23 @@ export default {
       var jsonApi = '[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"initialSupply","type":"uint256"},{"name":"tokenName","type":"string"},{"name":"tokenSymbol","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}]'
       // eslint-disable-next-line no-undef
       var MyContract = web3.eth.contract(JSON.parse(jsonApi))
-      MyContract.new(amount, tokenName, symbol, { data: bytecode, from: adr.toString(), gas: 3000000, gasPrice: 10000000000 }, function(err, res) {
+      // eslint-disable-next-line no-undef,no-unused-vars
+      var gasPrice = 10000000000
+      // eslint-disable-next-line no-undef
+      web3.eth.getGasPrice(function(err, res) {
+        if (!err) {
+          console.log(res.toString(10))
+          gasPrice = res.toString(10)
+        } else {
+          console.log(err)
+        }
+      })
+      MyContract.new(amount, tokenName, symbol, {
+        data: bytecode,
+        from: adr.toString(),
+        gas: 3000000,
+        gasPrice: gasPrice
+      }, function(err, res) {
         if (!err) {
           console.log(res)
         } else {
